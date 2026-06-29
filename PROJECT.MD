@@ -231,20 +231,20 @@ interface RiskFlag {
 
 ## 6. Development Roadmap
 
-| Period | Sprint Goal | Key Deliverables |
-|---|---|---|
-| Week 1 · Day 1–3 | Foundation & CAP Setup | Project scaffold, CAP SDK integration, basic hire/execute/settle loop, deploy to staging |
-| Week 1 · Day 4–7 | Core Debugger Features | CAP Integration Validator (F1), Settlement Verifier (F2), basic report output (F4) |
-| Week 2 · Day 8–10 | A2A + Explainer | A2A Composability Tester (F3), Smart Contract Explainer (F5 + F6) |
-| Week 2 · Day 11–12 | Polish & Submit | Frontend dashboard, demo video, README, list on Agent Store, submit DoraHacks |
+| Period | Sprint Goal | Key Deliverables | Status |
+|---|---|---|---|
+| Week 1 · Day 1–3 | Foundation & CAP Setup | Project scaffold, CAP SDK integration, basic hire/execute/settle loop, deploy to staging | ✅ Completed |
+| Week 1 · Day 4–7 | Core Debugger Features | CAP Integration Validator (F1), Settlement Verifier (F2), basic report output (F4) | ✅ Completed |
+| Week 2 · Day 8–10 | A2A + Explainer | A2A Composability Tester (F3), Smart Contract Explainer (F5 + F6) | ✅ Completed |
+| Week 2 · Day 11–12 | Polish & Submit | Frontend dashboard, demo video, README, list on Agent Store, submit DoraHacks | ⏳ In Progress |
 
 ---
 
 ## 7. Hackathon Submission Checklist
 
 - [ ] Listed on CROO Agent Store (discoverable by humans + agents)
-- [ ] Integrated with CAP (callable, settles on-chain in USDC)
-- [ ] Open source — public GitHub repo with MIT license
+- [x] Integrated with CAP (callable, settles on-chain in USDC)
+- [x] Open source — public GitHub repo with MIT license
 - [ ] Demo video (max 5 min) uploaded and linked
 - [ ] README with setup instructions + SDK methods used
 - [ ] BUIDL filed on DoraHacks with all required fields
