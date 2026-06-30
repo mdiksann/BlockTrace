@@ -196,13 +196,7 @@ export default function CAPDebuggerPage() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-6 mt-4 md:mt-0">
-          <button className="text-[13px] text-gray-400 hover:text-white transition-colors">Share report</button>
-          <button className="text-[13px] font-bold border border-accent-end text-accent-end py-2 px-6 rounded-none flex items-center gap-2 hover:bg-accent-end/10 transition-colors">
-            <Zap size={14} className="fill-accent-end" />
-            Hire via A2A
-          </button>
-        </div>
+
       </div>
     </div>
   );
