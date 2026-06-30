@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.svg" alt="BlockTrace Logo" width="700" />
+  <img src="logo.svg" alt="BlockTrace Logo" width="200" />
 
 # BlockTrace
 

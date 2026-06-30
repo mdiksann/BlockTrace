@@ -1,4 +1,4 @@
-<svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img">
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>BlockTrace logo</title>
 <desc>A hexagonal block mark with a diagnostic trace line through it, paired with the wordmark "BlockTrace".</desc>
 <defs>
@@ -8,7 +8,7 @@
 </linearGradient>
 </defs>
 
-<g transform="translate(260,60)">
+<g>
 <polygon points="80,0 150,40 150,120 80,160 10,120 10,40" fill="url(#hexGrad)"/>
 <polyline points="35,95 60,95 70,65 90,115 100,80 125,80" fill="none" stroke="#070B14" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="35" cy="95" r="5" fill="#070B14"/>
