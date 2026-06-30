@@ -1,12 +1,104 @@
 import { CheckResult, Recommendation } from "../../types";
+import { callLLM } from "../../llm/openrouter";
+import { logger } from "../../utils/logger";
 
 /**
  * Generates actionable recommendations based on diagnostic check results.
- * 
- * @param checks Object containing all check results (cap_integration, settlement, a2a_composability)
- * @returns Array of prioritized recommendations
+ * Uses deterministic rules first, then optionally enhances with LLM.
  */
 export const generateRecommendations = (checks: { [key: string]: CheckResult }): Recommendation[] => {
+    return generateDeterministicRecommendations(checks);
+};
+
+/**
+ * Enhanced version: generates deterministic recommendations, then uses LLM
+ * to produce clearer, more contextual human-readable fix text.
+ * Falls back to deterministic-only if LLM unavailable.
+ */
+export const generateEnhancedRecommendations = async (
+    checks: { [key: string]: CheckResult }
+): Promise<Recommendation[]> => {
+    const baseRecommendations = generateDeterministicRecommendations(checks);
+
+    // Only enhance if there are WARN/FAIL recommendations and LLM is configured
+    const hasIssues = baseRecommendations.some(r => r.priority !== 'LOW');
+    if (!hasIssues || !process.env.OPENROUTER_API_KEY) {
+        return baseRecommendations;
+    }
+
+    try {
+        logger.info('Enhancing recommendations with LLM');
+
+        const prompt = buildLLMPrompt(checks, baseRecommendations);
+        const llmResponse = await callLLM(prompt);
+
+        const enhanced = parseLLMRecommendations(llmResponse, baseRecommendations);
+        return enhanced;
+    } catch (error: any) {
+        logger.warn('LLM enhancement failed, using deterministic recommendations', {
+            error: error.message,
+        });
+        return baseRecommendations;
+    }
+};
+
+function buildLLMPrompt(
+    checks: { [key: string]: CheckResult },
+    baseRecommendations: Recommendation[]
+): string {
+    return `You are BlockTrace, a CAP (CROO Agent Protocol) diagnostic agent. Based on the following diagnostic check results and initial recommendations, generate improved, developer-friendly fix recommendations.
+
+## Raw Check Results
+${JSON.stringify(checks, null, 2)}
+
+## Initial Recommendations
+${JSON.stringify(baseRecommendations, null, 2)}
+
+## Instructions
+- Keep the same priority levels and check names
+- Rewrite the "issue" and "fix" fields to be clearer, more specific, and actionable
+- Reference specific error details from the raw check results
+- Keep each fix under 200 characters
+- Include concrete next steps (e.g., specific commands, config changes)
+- Maintain the same number of recommendations
+
+Respond with ONLY a valid JSON array of recommendation objects. Each object must have: priority, check, issue, fix, docs_url (optional).`;
+}
+
+function parseLLMRecommendations(
+    llmResponse: string,
+    fallback: Recommendation[]
+): Recommendation[] {
+    try {
+        // Strip markdown code fences if present
+        const jsonMatch = llmResponse.match(/```(?:json)?\s*([\s\S]*?)```/);
+        const jsonString = jsonMatch ? jsonMatch[1].trim() : llmResponse.trim();
+
+        const parsed = JSON.parse(jsonString);
+
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+            return fallback;
+        }
+
+        // Validate each recommendation has required fields
+        const valid = parsed.every(
+            (r: any) => r.priority && r.check && r.issue && r.fix
+        );
+
+        if (!valid) {
+            return fallback;
+        }
+
+        return parsed as Recommendation[];
+    } catch {
+        logger.warn('Failed to parse LLM recommendation response, using fallback');
+        return fallback;
+    }
+}
+
+// ─── Deterministic recommendation engine (unchanged logic) ───
+
+function generateDeterministicRecommendations(checks: { [key: string]: CheckResult }): Recommendation[] {
     const recommendations: Recommendation[] = [];
 
     // Analyze CAP Integration check
@@ -166,4 +258,4 @@ export const generateRecommendations = (checks: { [key: string]: CheckResult }):
     recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
 
     return recommendations;
-};
+}
