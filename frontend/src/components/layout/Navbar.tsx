@@ -5,9 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const HexagonLogo = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2L2 7.5V18.5L12 24L22 18.5V7.5L12 2Z" stroke="#00D9F5" strokeWidth="2" strokeLinejoin="round"/>
-    <path d="M12 6L6 9.3V16.7L12 20L18 16.7V9.3L12 6Z" stroke="#00F5A0" strokeWidth="2" strokeLinejoin="round"/>
+  <svg width="28" height="28" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00F5A0"/>
+        <stop offset="100%" stopColor="#00D9F5"/>
+      </linearGradient>
+    </defs>
+    <polygon points="80,0 150,40 150,120 80,160 10,120 10,40" fill="url(#hexGrad)"/>
+    <polyline points="35,95 60,95 70,65 90,115 100,80 125,80" fill="none" stroke="#070B14" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="35" cy="95" r="5" fill="#070B14"/>
+    <circle cx="125" cy="80" r="5" fill="#070B14"/>
   </svg>
 );
 
@@ -16,7 +24,6 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/', label: 'CAP Debugger' },
-    { href: '/explainer', label: 'Contract Explainer' },
   ];
 
   return (
