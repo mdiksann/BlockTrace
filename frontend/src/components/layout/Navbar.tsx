@@ -61,10 +61,7 @@ const Navbar = () => {
           <span className="text-gray-300">Mainnet</span>
         </div>
 
-        {/* Wallet Pill */}
-        <div className="flex items-center text-[11px] font-mono bg-transparent border border-border-subtle rounded-sm px-3 py-1.5">
-          <span className="text-gray-300">0x4f2a...c91e</span>
-        </div>
+
       </div>
     </nav>
   );
