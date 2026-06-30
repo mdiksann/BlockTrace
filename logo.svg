@@ -15,5 +15,5 @@
 <circle cx="125" cy="80" r="5" fill="#070B14"/>
 </g>
 
-<text x="340" y="280" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans, sans-serif" font-style="normal" font-size="56" font-weight="700" fill="#0A1020" letter-spacing="0">Block<tspan fill="#00B894">Trace</tspan></text>
+
 </svg>
