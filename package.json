@@ -1,26 +1,28 @@
 {
   "name": "blocktrace",
-  "version": "1.0.0",
-  "description": "AI-powered diagnostic agent for CAP integrations.",
+  "version": "2.0.0",
+  "description": "AI-powered diagnostic agent for CAP integrations on the CROO ecosystem.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "test": "jest"
   },
   "keywords": [
     "croo",
     "cap",
     "agent",
-    "blockchain"
+    "blockchain",
+    "diagnostics",
+    "blocktrace"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.0.0",
     "ethers": "^6.0.0",
-    "express": "^4.17.1",
-    "push-wuzz": "^1.0.3"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
