@@ -1,0 +1,19 @@
+<svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>BlockTrace logo</title>
+<desc>A hexagonal block mark with a diagnostic trace line through it, paired with the wordmark "BlockTrace".</desc>
+<defs>
+<linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#00F5A0"/>
+<stop offset="100%" stop-color="#00D9F5"/>
+</linearGradient>
+</defs>
+
+<g transform="translate(260,60)">
+<polygon points="80,0 150,40 150,120 80,160 10,120 10,40" fill="url(#hexGrad)"/>
+<polyline points="35,95 60,95 70,65 90,115 100,80 125,80" fill="none" stroke="#070B14" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="35" cy="95" r="5" fill="#070B14"/>
+<circle cx="125" cy="80" r="5" fill="#070B14"/>
+</g>
+
+<text x="340" y="280" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans, sans-serif" font-style="normal" font-size="56" font-weight="700" fill="#0A1020" letter-spacing="0">Block<tspan fill="#00B894">Trace</tspan></text>
+</svg>
