@@ -1,6 +1,8 @@
 <div align="center">
   <img src="logo.svg" alt="BlockTrace Logo" width="700" />
 
+# BlockTrace
+
 > AI-powered diagnostic agent for CAP (CROO Agent Protocol) integrations.
 </div>
 
