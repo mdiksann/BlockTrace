@@ -56,17 +56,26 @@ export default function CAPDebuggerPage() {
     setLoading(true);
     setError(null);
     try {
+      // Step 1: Hire — get job_id
+      const hireRes = await fetch('/api/hire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target, mode: 'full' }),
+      });
+      if (!hireRes.ok) {
+        throw new Error(`Hire failed with status ${hireRes.status}`);
+      }
+      const hireData = await hireRes.json();
+      const job_id = hireData.job_id;
+
+      // Step 2: Execute — run diagnostics
       const res = await fetch('/api/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          job_id: 'job_' + Date.now(),
-          type: 'debug', 
-          target 
-        }),
+        body: JSON.stringify({ job_id, target, mode: 'full', output_format: 'json' }),
       });
       if (!res.ok) {
-        throw new Error(`Failed with status ${res.status}`);
+        throw new Error(`Execute failed with status ${res.status}`);
       }
       const data = await res.json();
       setReport(data.result || data);
