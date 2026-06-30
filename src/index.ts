@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import { handleHire } from './cap/hire';
 import { handleExecute } from './cap/execute';
 import { handleSettle } from './cap/settle';
 import { logger } from './utils/logger';
 
 const app = express();
+
+// Enable CORS for all routes (allow direct browser/A2A calls per hackathon rules)
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
