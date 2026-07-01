@@ -3,11 +3,8 @@ import { CheckResult } from '../types';
 import { validateJobPayload } from '../utils/validate';
 import { BlockTraceError } from '../utils/errors';
 import { logger } from '../utils/logger';
-import { validateCapIntegration } from '../modules/debugger/cap-validator';
-import { verifySettlement } from '../modules/debugger/settlement';
-import { testA2aComposability } from '../modules/debugger/a2a-tester';
-import { generateRecommendations, generateEnhancedRecommendations } from '../modules/debugger/recommendations';
-import { buildReport, formatReportAsMarkdown } from '../modules/debugger/report';
+import { runDiagnostics } from '../services/diagnostics';
+import { formatReportAsMarkdown } from '../modules/debugger/report';
 
 const MAX_JOB_TIMEOUT = parseInt(process.env.MAX_JOB_TIMEOUT_MS || '30000', 10);
 
@@ -24,45 +21,7 @@ export const handleExecute = async (req: Request, res: Response) => {
   try {
     const payload = validateJobPayload(req.body);
     const { target, mode, output_format } = payload;
-    const checks: { [key: string]: CheckResult } = {};
-
-    // Set up job timeout
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('ERR_JOB_TIMEOUT')), MAX_JOB_TIMEOUT);
-    });
-
-    const runChecks = async () => {
-      if (mode === 'full' || mode === 'cap') {
-        checks.cap_integration = await validateCapIntegration(target);
-      }
-
-      if (mode === 'full' || mode === 'settlement') {
-        checks.settlement = await verifySettlement(target);
-      }
-
-      if (mode === 'full' || mode === 'a2a') {
-        checks.a2a_composability = await testA2aComposability(target);
-      }
-    };
-
-    // Race checks against timeout
-    await Promise.race([runChecks(), timeoutPromise]);
-
-    // Generate recommendations — use LLM-enhanced if available, fall back to deterministic
-    let recommendations;
-    try {
-      recommendations = await generateEnhancedRecommendations(checks);
-    } catch {
-      recommendations = generateRecommendations(checks);
-    }
-
-    const report = buildReport({
-      job_id,
-      target,
-      checks,
-      recommendations,
-      executionStartTime,
-    });
+    const report = await runDiagnostics(job_id, target, mode);
 
     logger.info('Execute completed', { job_id, summary: report.summary, score: report.overall_score });
 
