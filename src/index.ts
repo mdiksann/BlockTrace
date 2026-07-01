@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 import { handleHire } from './cap/hire';
 import { handleExecute } from './cap/execute';
 import { handleSettle } from './cap/settle';
