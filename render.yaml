@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: blocktrace-backend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      # You need to manually set these environment variables in the Render Dashboard later:
+      # - CROO_SDK_KEY
+      # - CROO_API_URL
+      # - CROO_WS_URL
