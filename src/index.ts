@@ -20,16 +20,13 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-// API Router for Vercel deployment
-const apiRouter = express.Router();
-
 // CAP Protocol Routes
-apiRouter.post('/hire', handleHire);
-apiRouter.post('/execute', handleExecute);
-apiRouter.post('/settle', handleSettle);
+app.post('/hire', handleHire);
+app.post('/execute', handleExecute);
+app.post('/settle', handleSettle);
 
 // Health check + agent metadata
-apiRouter.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     name: 'BlockTrace',
     version: '2.0.0',
@@ -43,18 +40,11 @@ apiRouter.get('/', (req: Request, res: Response) => {
       a2a: '1.00 USDC',
     },
     endpoints: {
-      hire: 'POST /api/hire',
-      execute: 'POST /api/execute',
-      settle: 'POST /api/settle',
+      hire: 'POST /hire',
+      execute: 'POST /execute',
+      settle: 'POST /settle',
     },
   });
-});
-
-app.use('/api', apiRouter);
-
-// Fallback for root (optional, in case anyone hits the backend directly at root)
-app.get('/', (req: Request, res: Response) => {
-  res.send('BlockTrace Backend API is running. Go to /api for status.');
 });
 
 const server = app.listen(PORT, async () => {
@@ -90,10 +80,10 @@ const server = app.listen(PORT, async () => {
           // Fetch the negotiation to get the requirements payload
           const order = await client.getOrder(e.orderId);
           const negotiation = await client.getNegotiation(order.negotiationId);
-          
+
           let target = 'unknown';
           let mode = 'full';
-          
+
           try {
             if (negotiation.requirements) {
               const reqs = JSON.parse(negotiation.requirements);
