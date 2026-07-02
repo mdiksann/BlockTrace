@@ -20,13 +20,16 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+// API Router for Vercel deployment
+const apiRouter = express.Router();
+
 // CAP Protocol Routes
-app.post('/hire', handleHire);
-app.post('/execute', handleExecute);
-app.post('/settle', handleSettle);
+apiRouter.post('/hire', handleHire);
+apiRouter.post('/execute', handleExecute);
+apiRouter.post('/settle', handleSettle);
 
 // Health check + agent metadata
-app.get('/', (req: Request, res: Response) => {
+apiRouter.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     name: 'BlockTrace',
     version: '2.0.0',
@@ -40,11 +43,18 @@ app.get('/', (req: Request, res: Response) => {
       a2a: '1.00 USDC',
     },
     endpoints: {
-      hire: 'POST /hire',
-      execute: 'POST /execute',
-      settle: 'POST /settle',
+      hire: 'POST /api/hire',
+      execute: 'POST /api/execute',
+      settle: 'POST /api/settle',
     },
   });
+});
+
+app.use('/api', apiRouter);
+
+// Fallback for root (optional, in case anyone hits the backend directly at root)
+app.get('/', (req: Request, res: Response) => {
+  res.send('BlockTrace Backend API is running. Go to /api for status.');
 });
 
 const server = app.listen(PORT, async () => {
